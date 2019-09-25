@@ -1,0 +1,19 @@
+version: '3'
+services:    
+  task_mongo:
+    container_name: task_mongo
+    image: 'mongo:4.0.4'
+    restart: always
+    networks:
+      - api
+    ports:
+      - '8001:27017'
+    volumes:
+      - 'task_mongo:/data/db'
+
+volumes:
+  task_mongo:
+
+networks:
+  api:
+    driver: bridge

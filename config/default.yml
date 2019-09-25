@@ -1,0 +1,10 @@
+http:
+  port: 8000
+  host: localhost
+log:
+  level: debug
+  path: /dev/null
+  stream: short
+mongodb:
+  mongoURL: mongodb://localhost:8001
+  mongoDB: taskDB

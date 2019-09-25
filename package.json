@@ -1,0 +1,45 @@
+{
+  "name": "nodets-express-jest",
+  "version": "1.0.0",
+  "description": "A simple boilerplate with Node.JS + Typescript + Express + Jest + MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:ci": "jest --runInBand",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "concurrently \"eslint . --ext .ts,.tsx\" \"tsc --pretty --noEmit\"",
+    "run-docker": "docker-compose up -d",
+    "start:dev": "NODE_ENV=development DEV=true ts-node-dev --ignore-watch node_modules --inspect -- app.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
+    "config": "^3.2.2",
+    "eslint": "^6.4.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2",
+    "ts-node": "^8.4.1",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript": "^3.6.3"
+  },
+  "devDependencies": {
+    "@types/bunyan": "^1.8.6",
+    "@types/bunyan-format": "^0.2.0",
+    "@types/config": "^0.0.34",
+    "@types/express": "^4.17.1",
+    "@types/jest": "^24.0.18",
+    "@types/mongodb": "^3.3.3",
+    "@types/node": "^12.7.7",
+    "@types/supertest": "^2.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "concurrently": "^4.1.2",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.1.0"
+  }
+}

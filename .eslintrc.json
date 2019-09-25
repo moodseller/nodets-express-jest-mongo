@@ -1,0 +1,58 @@
+{
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
+	"parserOptions": {
+	  "ecmaFeatures": {
+		"jsx": true
+	  },
+	  "ecmaVersion": 6,
+	  "sourceType": "module"
+	},
+	"env": {
+	  "es6": true,
+	  "jest": true,
+	  "node": true
+	},
+	"globals": {
+	  "process": true,
+	  "global": true,
+	  "__dirname": true
+	},
+	"rules": {
+	  "@typescript-eslint/no-useless-constructor": "error",
+	  "@typescript-eslint/ban-types": "error",
+	  "@typescript-eslint/class-name-casing": "error",
+	  "@typescript-eslint/member-delimiter-style": "error",
+	  "@typescript-eslint/member-naming": ["error", { "private": "^_" }],
+	  "@typescript-eslint/no-array-constructor": "error",
+	  "@typescript-eslint/no-empty-interface": "error",
+	  "@typescript-eslint/no-for-in-array": "error",
+	  "@typescript-eslint/no-inferrable-types": "error",
+	  "@typescript-eslint/no-misused-new": "error",
+	  "@typescript-eslint/no-non-null-assertion": "error",
+	  "@typescript-eslint/no-this-alias": "error",
+	  "@typescript-eslint/prefer-namespace-keyword": "error",
+	  "@typescript-eslint/unified-signatures": "error",
+  
+	  "indent": ["error", "tab", { "SwitchCase": 1 }],
+		"no-console": "warn",
+		"no-return-await": "error",
+		"jsx-quotes": ["error", "prefer-single"],
+		"no-extra-bind": "error",
+		"semi": "error",
+		"prefer-const": "error",
+		"curly": "error",
+		"eol-last": "error",
+		"no-extra-label": "error",
+		"max-len": ["error", { "code": 120 }],
+		"no-debugger": "error",
+		"no-duplicate-imports": "error",
+		"no-var": "error",
+		"one-var-declaration-per-line": "error",
+		"no-undef": "error",
+		"no-eval": "error",
+		"no-fallthrough": "error",
+		"eqeqeq": ["error", "always"]
+	}
+  }
+  
