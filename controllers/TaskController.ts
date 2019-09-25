@@ -10,7 +10,7 @@ interface ErrorMessage {
 export interface ITaskRouteReply {
 	task: ITask | null;
 }
-interface IAllTasksRouteReply {
+export interface IAllTasksRouteReply {
 	tasks: ITask[];
 }
 
@@ -36,10 +36,6 @@ export class TaskController {
 		res: TypedResponse<ITaskRouteReply | ErrorMessage>,
 		next: NextFunction
 	) => {
-		if (!req.params.id) {
-			return res.status(400).json({ message: 'Please provide a key'});
-		}
-
 		const key = req.params.id;
 
 		const task = await this._taskStorage.findTaskByKey(key);
@@ -67,7 +63,7 @@ export class TaskController {
 		if (task) {
 			return res.status(200).json({ task: taskValues });
 		} else {
-			return res.status(200).json({ message: 'Failed to create task.' });
+			return res.status(500).json({ message: 'Failed to create task.' });
 		}
 	};
 }

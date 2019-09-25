@@ -4,7 +4,7 @@ import { LoggerService } from '../services/loggerService';
 import MainApplication from '../app';
 import { SettingsService } from '../services/settingsService';
 import { TaskStorage, ITask } from '../mongo/TaskStorage';
-import { ITaskRouteReply } from '../controllers/TaskController';
+import { ITaskRouteReply, IAllTasksRouteReply } from '../controllers/TaskController';
 
 describe('Task Routes Test', () => {
 	let mainApplication: MainApplication;
@@ -17,7 +17,9 @@ describe('Task Routes Test', () => {
 	
 	beforeEach(() => {
 		taskStorage = {
-			findTaskByKey: jest.fn()
+			findTaskByKey: jest.fn(),
+			findAllTasks: jest.fn(),
+			createTask: jest.fn()
 		};
 
 		settingsService = {
@@ -55,25 +57,75 @@ describe('Task Routes Test', () => {
 
 		const r = await request.get(`/tasks/${params}`);
 
-		expect(taskStorage.findTaskByKey).toBeCalledWith('1');
+		expect(taskStorage.findTaskByKey).toBeCalledWith(params);
 		expect(r.status).toEqual(200);
 		expect(r.body).toEqual({ task: testTask } as ITaskRouteReply);
 	});
 
 	it('should get all tasks successfully', async () => {
-		const params = '1';
-		const testTask: ITask = {
+		const testTasks: ITask[] = [{
+			key: '1',
+			description: 'test1',
+			name: 'test1'
+		},
+		{
+			key: '2',
+			description: 'test2',
+			name: 'test2'
+		}];
+		
+		taskStorage.findAllTasks = jest.fn().mockReturnValue(testTasks);
+
+		const r = await request.get(`/tasks/`);
+
+		expect(taskStorage.findAllTasks).toBeCalledTimes(1);
+		expect(r.status).toEqual(200);
+		expect(r.body).toEqual({ tasks: testTasks } as IAllTasksRouteReply);
+	});
+
+	it('should create task successfully', async () => {
+		const taskBody: ITask = {
 			key: '1',
 			description: 'test1',
 			name: 'test1'
 		};
 		
-		taskStorage.findTaskByKey = jest.fn().mockReturnValue(testTask);
+		taskStorage.createTask = jest.fn().mockReturnValue(true);
 
-		const r = await request.get(`/tasks/${params}`);
+		const r = await request.post(`/tasks/`).send(taskBody);
 
-		expect(taskStorage.findTaskByKey).toBeCalledWith('1');
+		expect(taskStorage.createTask).toBeCalledWith(taskBody);
 		expect(r.status).toEqual(200);
-		expect(r.body).toEqual({ task: testTask } as ITaskRouteReply);
+		expect(r.body).toEqual({ task: taskBody } as ITaskRouteReply);
+	});
+
+	it('should not pass validation', async () => {
+		const failedTaskBody: any = {
+			key: 1,
+			description: 'test1',
+			name: 'test1'
+		};
+
+		const missingParamsTaskBody: any = {
+			key: '1',
+			description: 'test1'
+		};
+
+		const createTaskSpy = jest.spyOn(taskStorage, 'createTask');
+		
+
+		let r = await request.post(`/tasks/`).send(failedTaskBody);
+		expect(createTaskSpy).toBeCalledTimes(0);
+		expect(r.status).toEqual(400);
+		expect(r.body).toMatchObject({
+			message: 'Available task keys are: key,name,description, only string values.'
+		});
+
+		r = await request.post(`/tasks/`).send(missingParamsTaskBody);
+		expect(createTaskSpy).toBeCalledTimes(0);
+		expect(r.status).toEqual(400);
+		expect(r.body).toMatchObject({
+			message: 'Available task keys are: key,name,description, only string values.'
+		});
 	});
 });
